@@ -9,7 +9,7 @@
 <body>
     <h2> Create A New Account</h2>
     
-    <form action=>
+    <form onsubmit= "SignUp(event)">
         <!-- Name Field -->
         <label for="name">Enter Your Name</label> <br>
         <input type="text" id="name" name="name" required><br>
@@ -23,10 +23,11 @@
         <input type="password" id="password" name="password" required><br>
 
         <!-- Submit Button -->
-        <input type="submit" id="signup" value="Sign Up">
-        <a href="signin.html" id="sign-in-link">Already have an account? Sign in</a>
+        <button id="signup" >SignUp</button>
+        
+        <a href="./Login/login.html" id="sign-in-link">Already have an account? Sign in</a>
         </form>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-<script src="./script.js"></script>
+<script src="./signup.js"></script>
 </html>

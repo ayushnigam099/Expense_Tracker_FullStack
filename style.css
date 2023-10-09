@@ -42,13 +42,19 @@ input {
     border-radius: 4px;
 }
 
-input[type="submit"] {
+#signup {
     background: linear-gradient(to right, #56CCF2, #2F80ED);
     color: #ffffff;
+    width: calc(100% - 20px);
+    padding: 8px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
     cursor: pointer;
 }
 
-input[type="submit"]:hover {
+#signup:hover {
     background: linear-gradient(to right, #2F80ED, #56CCF2);
 }
 #sign-in-link {
