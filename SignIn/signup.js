@@ -11,15 +11,12 @@ async function SignUp(e){
     const response= await axios.post("http://localhost:5500/user/signup", details);
     if(response.status === 200)     
     {
-        window.location.href= "./Login/login.html" // Change the page on successful account creation
-    }
-    else{
-        throw new Error("Failed to login");
+        window.location.href= "../Login/login.html" // Change the page on successful account creation
     }
   }
   catch(err)
   {
-    console.log(err)
+    // console.log(err)
     if(err.response.data.name=="SequelizeUniqueConstraintError")
     {
       document.body.innerHTML+= `<div style = "color:red;">Email Already Registered</div>`;

@@ -60,11 +60,42 @@ app.post('/user/signup', async(req,res,next)=>
         }
         })
 
+app.post('/user/signin', async(req,res,next)=>
+{
+  function isStringValidate(string){
 
+    if(string == undefined || string.length===0)
+     return true;
+    else{
+      return false;
+    }
+   }
+   try{
+    const {email, password}= req.body;
+    if(isStringValidate(email) || isStringValidate(password))
+    {
+      return res.status(400).json({err:"Please Fill All The Entries!"})
+    }
 
-
-
-
+    let {dataValues} = await Users.findOne({
+    where: {
+      email: email
+    }
+  });
+      // console.log(dataValues);
+      if(dataValues.password===password){
+        return res.status(200).json({Success: "True"})
+      }
+      else{
+        return res.status(401).json({err:"Invalid Password"})
+      }
+    }
+    catch(err)
+    {
+          console.log(err);
+          return res.status(400).json({Message:"User Not Found"});
+    }
+    })
 
 sequelize
   .sync()
