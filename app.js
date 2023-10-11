@@ -1,3 +1,4 @@
+const Sequelize = require('sequelize');
 const bodyParser = require('body-parser');
 const express= require('express');
 const cors= require('cors')
@@ -33,25 +34,36 @@ const Users = sequelize.define('Users', {
 
 app.post('/user/signup', async(req,res,next)=>
 {
+   function isStringValidate(string){
+
+    if(string == undefined || string.length===0)
+     return true;
+    else{
+      return false;
+    }
+   }
     try{
-        const name = req.body.name;
-        const email = req.body.email;
-        const password = req.body.password;
-        
-        const {dataValues}= await Users.create({
-                                        name,
-                                        email,
-                                        password
-                                            })
-            console.log("data",dataValues) ;
+        const {name, email, password}= req.body;
+        if(isStringValidate(name) || isStringValidate(email) || isStringValidate(password))
+        {
+          return res.status(400).json({err: "Please Fill All The Entries!"})
+        }
+
+        const {dataValues}= await Users.create({name,email,password})
+            // console.log("data",dataValues) ;
             res.status(200).json({Success: dataValues});   
             }
         catch(err)
         {
-            console.log(err);
-            res.status(400).json({Failed: "Account is already created with same email"});
+            // console.log(err);
+            res.status(400).json(err);
         }
         })
+
+
+
+
+
 
 
 sequelize

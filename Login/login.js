@@ -1,17 +1,16 @@
 // START: SignUp Listener
-async function SignUp(e){
+async function SignIn(e){
     e.preventDefault();
     
   try{
     const details={
-        name: e.target.name.value,
         email: e.target.email.value,
         password: e.target.password.value
     }
-    const response= await axios.post("http://localhost:5500/user/signup", details);
+    const response= await axios.post("http://localhost:5500/user/signin", details);
     if(response.status === 200)     
     {
-        window.location.href= "./Login/login.html" // Change the page on successful account creation
+        window.location.href= " " // Change the page on successful account creation
     }
     else{
         throw new Error("Failed to login");
