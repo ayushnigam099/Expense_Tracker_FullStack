@@ -2,6 +2,7 @@ const Sequelize = require('sequelize');
 const bodyParser = require('body-parser');
 const express= require('express');
 const cors= require('cors')
+const bcrypt = require("bcrypt")
 const app = express();
 const sequelize= require('./connection/database');
 app.use(bodyParser.json({extended:false}));
@@ -48,15 +49,18 @@ app.post('/user/signup', async(req,res,next)=>
         {
           return res.status(400).json({err: "Please Fill All The Entries!"})
         }
-
-        const {dataValues}= await Users.create({name,email,password})
-            // console.log("data",dataValues) ;
-            res.status(200).json({Success: dataValues});   
-            }
+        const saltrounds=10;
+        bcrypt.hash(password, saltrounds, async(err, hash)=>
+        {
+          console.log(err);
+          await Users.create({name,email,password: hash})
+          res.status(200).json({Success: "User Successfully Created"}); 
+        })
+       }
         catch(err)
         {
             // console.log(err);
-            res.status(400).json(err);
+            res.status(500).json(err);
         }
         })
 
@@ -93,7 +97,7 @@ app.post('/user/signin', async(req,res,next)=>
     catch(err)
     {
           console.log(err);
-          return res.status(400).json({Message:"User Not Found"});
+          return res.status(404).json({Message:"User Not Found"});
     }
     })
 

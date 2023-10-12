@@ -11,6 +11,7 @@ async function SignUp(e){
     const response= await axios.post("http://localhost:5500/user/signup", details);
     if(response.status === 200)     
     {
+      alert("User Successfully Created!");
         window.location.href= "../Login/login.html" // Change the page on successful account creation
     }
   }
