@@ -8,16 +8,16 @@ async function SignUp(e){
         email: e.target.email.value,
         password: e.target.password.value
     }
-    const response= await axios.post("http://localhost:5500/user/signup", details);
+    let response= await axios.post("http://localhost:5500/user/signup", details);
     if(response.status === 200)     
     {
       alert("User Successfully Created!");
-        window.location.href= "../Login/login.html" // Change the page on successful account creation
+      window.location.href= "../Login/login.html"; // Change the page on successful account creation
     }
   }
   catch(err)
   {
-    // console.log(err)
+    console.log(err)
     if(err.response.data.name=="SequelizeUniqueConstraintError")
     {
       document.body.innerHTML+= `<div style = "color:red;">Email Already Registered</div>`;
@@ -27,7 +27,7 @@ async function SignUp(e){
       document.body.innerHTML+= `<div style = "color:red;"> All Fields Are Required!</div>`;
       return;
     }
-     document.body.innerHTML+= `<div style = "color:red;"> ${err}</div>`;
+    return document.body.innerHTML+= `<div style = "color:red;"> ${err}</div>`;
   }
 }
 //END: SignUp Listener

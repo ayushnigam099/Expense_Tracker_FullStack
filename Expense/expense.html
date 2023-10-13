@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EXPENSE TRACKER</title>
+    <!-- Link to the external CSS file -->
+    <link rel="stylesheet" href="./expense.css">
+</head>
+
+<body>
+    <form action="#" autocomplete="off" id="my-form">
+        <h3>EXPENSE TRACKER</h3>
+        <h6>HAVE A TRACK ON YOUR EVERYDAY EXPENDITURE!</h6>
+        <hr>
+        <label for="amount">Amount:</label>
+        <input type="number" id="amt" name="amount" placeholder="Enter the amount" step="0.01">
+
+        <label for="description">Description:</label>
+        <input type="text" id="des" name="description" placeholder="Enter the description">
+
+        <label for="category" >Category:</label>
+        <select name="category" id="cat">
+            <option value="Fuel">Fuel</option>
+            <option value="Recharge">Recharge</option>
+            <option value="Electricity">Electricity</option>
+            <option value="Entertainment">Entertainment</option>
+        </select>
+
+        <input type="submit" id="but" value="ADD EXPENSE"></input>
+    </form>
+
+    <div id="entry">
+
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="./expense.js"></script>
+</body>
+
+</html>

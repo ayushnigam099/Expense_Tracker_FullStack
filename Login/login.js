@@ -11,29 +11,27 @@ async function SignIn(e){
     if(response.status === 200)     
     {
         alert("User Successfully Logged In!")
-        // window.location.href= " " // Change the page on successful account creation
+        window.location.href="../Expense/expense.html"
     }
   }
   catch(err)
   {
-    console.log(err);
-    if(err.response.data.err=="Invalid Password")
+    // console.log(err);
+    if(err.response.status== 404)
     {
-        alert("Invalid Password");
+        alert('User does not exist');
        
     }
-    else if(err.response.data.err=="Please Fill All The Entries!") { 
-      document.body.innerHTML+= `<div style = "color:red;"> All Fields Are Required!</div>`;
+    else if(err.response.status== 400) { 
+      alert(`${err.response.data.message}`);
       
     }
-    else if(err.response.data.Message=="User Not Found") { 
-        alert("User Not Found");
+      else if(err.response.status== 500){
+        alert(`${err.response.data.message}`);
       }
       else{
         document.body.innerHTML+= `<div style = "color:red;"> ${err}</div>`;
-        return;
       }
-     
   }
 }
 //END: SignIn Listener

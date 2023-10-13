@@ -8,6 +8,8 @@ const sequelize= require('./connection/database');
 app.use(bodyParser.json({extended:false}));
 app.use(cors());
 
+
+
 const Users = sequelize.define('Users', {
     id: {
       type: Sequelize.INTEGER,
@@ -33,11 +35,25 @@ const Users = sequelize.define('Users', {
    
   });
 
+  const Expense = sequelize.define('Expenses', {
+    id: {
+        type: Sequelize.INTEGER,
+        autoIncrement: true,
+        allowNull: false,
+        primaryKey: true,
+        unique: true,
+    },
+    amount: Sequelize.FLOAT,
+    category: Sequelize.STRING,
+    description: Sequelize.STRING,
+})
+
 app.post('/user/signup', async(req,res,next)=>
 {
+   const saltrounds=10; //Saltrounds for encrypting password
    function isStringValidate(string){
 
-    if(string == undefined || string.length===0)
+    if(string == undefined || string.length === 0)
      return true;
     else{
       return false;
@@ -49,57 +65,88 @@ app.post('/user/signup', async(req,res,next)=>
         {
           return res.status(400).json({err: "Please Fill All The Entries!"})
         }
-        const saltrounds=10;
-        bcrypt.hash(password, saltrounds, async(err, hash)=>
-        {
-          console.log(err);
-          await Users.create({name,email,password: hash})
-          res.status(200).json({Success: "User Successfully Created"}); 
-        })
+          const hash =  await bcrypt.hash(password, saltrounds)
+         await Users.create({name,email,password: hash});
+          return res.status(200).json({Success: "User Successfully Created"}); 
        }
         catch(err)
         {
-            // console.log(err);
+            //console.log(err);
             res.status(500).json(err);
         }
         })
 
-app.post('/user/signin', async(req,res,next)=>
-{
+app.post('/user/signin', async (req, res, next) => {
   function isStringValidate(string){
 
-    if(string == undefined || string.length===0)
+    if(string == undefined || string.length === 0)
      return true;
     else{
       return false;
     }
    }
-   try{
-    const {email, password}= req.body;
-    if(isStringValidate(email) || isStringValidate(password))
-    {
-      return res.status(400).json({err:"Please Fill All The Entries!"})
-    }
 
-    let {dataValues} = await Users.findOne({
-    where: {
-      email: email
+  try {
+      const { email, password } = req.body;
+  
+      // Check if email or password is missing
+      if (isStringValidate(email) || isStringValidate(password)) {
+        return res.status(400).json({ success: false, message: "Please fill in all the fields." });
+      }
+  
+      // Find the user by email
+      const user = await Users.findOne({
+        where: {
+          email: email
+        }
+      });
+  
+      // Check if the user exists
+      if (!user) {
+        return res.status(404).json({ success: false, message: 'User does not exist' });
+      }
+  
+      // Compare the provided password with the hashed password in the database
+      bcrypt.compare(password, user.dataValues.password, (err, result) => {
+        if (err) {
+          throw new Error('Something went wrong');
+        }
+  
+        if (result === true) {
+          return res.status(200).json({ success: true, message: "User logged in successfully" });
+        } else {
+          return res.status(400).json({ success: false, message: 'Password is incorrect' });
+        }
+      });
+    } catch (error) {
+      // Handle other errors
+      res.status(500).json({ message: error.message, success: false });
     }
   });
-      // console.log(dataValues);
-      if(dataValues.password===password){
-        return res.status(200).json({Success: "True"})
-      }
-      else{
-        return res.status(401).json({err:"Invalid Password"})
-      }
-    }
+        
+
+ app.post('/expense/addexpense', async(req,res,next)=>
+ {
+  try{
+    const amount = req.body.Amount;
+    const description = req.body.Description;
+    const category = req.body.Category;
+    
+    const {dataValues}= await Expense.create({
+       amount: amount,
+       description: description,
+       category: category
+    })
+        console.log("data",dataValues) ;
+        res.status(200).json({Success: dataValues});   
+        }
     catch(err)
     {
-          console.log(err);
-          return res.status(404).json({Message:"User Not Found"});
+        console.log(err);
+        res.status(400).json({failed: "Error Occurred"});
     }
     })
+ 
 
 sequelize
   .sync()
