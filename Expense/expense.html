@@ -32,10 +32,22 @@
     </form>
 
     <div id="entry">
-
+        <table class="expense-table">
+            <thead>
+                <tr>
+                    <th>Amount</th>
+                    <th>Description</th>
+                    <th>Category</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="expense-list">
+                <!-- Existing expense entries will be appended here -->
+            </tbody>
+        </table>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="./expense.js"></script>
 </body>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="./expense.js"></script>
 
 </html>

@@ -11,7 +11,8 @@ async function SignIn(e){
     if(response.status === 200)     
     {
         alert("User Successfully Logged In!")
-        window.location.href="../Expense/expense.html"
+        localStorage.setItem("token", response.data.token);
+        // window.location.href="../Expense/expense.html"
     }
   }
   catch(err)

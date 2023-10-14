@@ -1,35 +1,44 @@
+/* Reset some default styles */
+body, h1, h2, h3, p, table {
+    margin: 0;
+    padding: 0;
+}
+
 body {
     font-family: 'Arial', sans-serif;
-    background-color: #2c3e50; /* Dark Background Color */
+    background-color: #2c3e50;
     margin: 0;
     display: flex;
-    align-items: center;
-    justify-content: center;
+    align-items: flex-start; /* Align to the top */
+    justify-content: space-between;
     height: 100vh;
 }
 
+/* Styles for the form at the upper left */
 form {
-    background: linear-gradient(to bottom, #3498db, #2980b9); /* Gradient Background */
+    background: linear-gradient(to bottom, #3498db, #2980b9);
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     padding: 20px;
     width: 300px;
     text-align: center;
-    animation: fadeIn 0.8s ease-in-out; /* Fade In Animation */
+    animation: fadeIn 0.8s ease-in-out;
+    margin-top: 20px; /* Add margin from the top */
+    margin-right: 20px; /* Add some margin to create a gap */
 }
 
 h3 {
-    color: #fff; /* White Text Color */
+    color: #fff; 
 }
 
 h6 {
-    color: #ecf0f1; /* Light Gray Text Color */
+    color: #ecf0f1; 
 }
 
 label {
     display: block;
     margin: 10px 0 5px;
-    color: #ecf0f1; /* Light Gray Text Color */
+    color: #ecf0f1; 
 }
 
 input,
@@ -40,22 +49,22 @@ select {
     box-sizing: border-box;
     border: none;
     border-radius: 4px;
-    background-color: #ecf0f1; /* Light Gray Background Color */
-    color: #333; /* Dark Text Color */
+    background-color: #ecf0f1; 
+    color: #333; 
 }
 
 input[type="submit"] {
-    background-color: #16a085; /* Green Button Color */
-    color: #fff; /* White Text Color */
+    background-color: #16a085; 
+    color: #fff; 
     padding: 10px;
     cursor: pointer;
     border: none;
     border-radius: 4px;
-    transition: background-color 0.3s ease; /* Smooth Transition */
+    transition: background-color 0.3s ease; 
 }
 
 input[type="submit"]:hover {
-    background-color: #1abc9c; /* Light Green Hover Color */
+    background-color: #1abc9c;
 }
 
 @keyframes fadeIn {
@@ -65,4 +74,53 @@ input[type="submit"]:hover {
     to {
         opacity: 1;
     }
+}
+
+/* Styles for the expense table at the upper right */
+.expense-table-container {
+    width: 70%;
+    display: flex;
+    justify-content: flex-end; /* Align to the right */
+}
+
+.expense-table {
+    width: 100%; /* Adjust as needed */
+    border-collapse: collapse;
+    margin-top: 20px;
+    margin-right: 20px; /* Add margin to the right */
+}
+
+th, td {
+    padding: 12px;
+    border: 1px solid #ddd;
+}
+
+th {
+    background-color: #3498db; /* Blue header color */
+    color: white;
+}
+
+td {
+    background-color: #ecf0f1; /* Light gray row color */
+}
+
+.delete-btn, .edit-btn {
+    background-color: #FF6347;
+    color: white;
+    border: 1px solid #FF6347;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.edit-btn {
+    background-color: #32CD32;
+    border: 1px solid #32CD32;
+}
+
+.delete-btn, .edit-btn {
+    margin-right: 5px;
+}
+
+.delete-btn:hover, .edit-btn:hover {
+    background-color: #D9534F;
 }
