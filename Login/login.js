@@ -12,7 +12,7 @@ async function SignIn(e){
     {
         alert("User Successfully Logged In!")
         localStorage.setItem("token", response.data.token);
-        // window.location.href="../Expense/expense.html"
+        window.location.href="../Expense/expense.html"
     }
   }
   catch(err)
