@@ -124,3 +124,17 @@ td {
 .delete-btn:hover, .edit-btn:hover {
     background-color: #D9534F;
 }
+#rzp-button1 {
+    background-color: #f39c12; /* Orange button color */
+    color: #fff; /* White text color */
+    padding: 10px;
+    cursor: pointer;
+    border: none;
+    border-radius: 4px;
+    margin-top: 10px; /* Add margin from the top */
+    transition: background-color 0.3s ease; 
+}
+
+#rzp-button1:hover {
+    background-color: #e67e22; /* Darker orange on hover */
+}

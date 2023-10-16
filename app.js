@@ -5,6 +5,8 @@ const app = express();
 const sequelize= require('./connection/database');
 const Users = require('./models/users');
 const Expense = require('./models/expense');
+const Order = require('./models/orders');
+
 const userRoutes = require('./routes/users')
 const expenseRoutes = require('./routes/expense')
 app.use(bodyParser.json({extended:false}));
@@ -16,6 +18,9 @@ app.use('/expense',expenseRoutes )
 
 Users.hasMany(Expense);
 Expense.belongsTo(Users);
+
+User.hasMany(Order);
+Order.belongsTo(User);
 
 sequelize
   .sync()

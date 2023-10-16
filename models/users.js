@@ -22,7 +22,9 @@ const Users = sequelize.define('Users', {
     password: {
         type: Sequelize.STRING,
         allowNull: false
-      }
+      },
+      // Adding a premium user column too
+      ispremiumuser: Sequelize.BOOLEAN
    
   });
   module.exports = Users;
