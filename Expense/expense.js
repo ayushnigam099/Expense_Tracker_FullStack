@@ -11,7 +11,7 @@ async function create(e) {
     try{ 
     let token= localStorage.getItem("token");
     let {data}= await axios.get("http://localhost:5500/expense/getexpense", { headers: {"Authorization":token}})
-  
+    
   
     for (let i = 0; i < data.data.length; i++) {
         const html = createExpenseElement(data.data[i]);
@@ -99,4 +99,48 @@ async function onDelete(e, id) {
             return document.body.innerHTML+= `<div style = "color:red;"> ${err}</div>`;
         }
         }
+}
+
+document.getElementById('rzp-button1').onclick = async function (e) {
+    const token = localStorage.getItem('token')
+    const response  = await axios.get('http://localhost:5500/purchase/premiummembership', { headers: {"Authorization" : token} });
+    console.log(response);
+    var options =
+    {
+     "key": response.data.key_id, // Enter the Key ID generated from the Dashboard
+     "order_id": response.data.order.id,// For one time payment
+     // This handler function will handle the success payment
+     "handler": async function (response) {
+        const res = await axios.post('http://localhost:5500/purchase/updatetransactionstatus',{
+             order_id: options.order_id,
+             payment_id: response.razorpay_payment_id,
+         }, { headers: {"Authorization" : token} })
+        
+        console.log(res)
+         alert('You are a Premium User Now')
+         document.getElementById('rzp-button1').style.visibility = "hidden"
+         document.getElementById('message').innerHTML = "Premium"
+         document.getElementById('message').style.display = 'block';
+        
+     },
+  };
+  const rzp1 = new Razorpay(options);
+  rzp1.open();
+  e.preventDefault();
+
+  rzp1.on('payment.failed', async function (response) {
+    console.log(response);
+    alert('Something went wrong');
+
+    // Add the logic to update the order status to FAILED
+    const res = await axios.post('http://localhost:5500/purchase/updatetransactionstatus', {
+        order_id: options.order_id,
+        payment_id: response.error.metadata.order_id, // Adjust as needed based on the Razorpay response structure
+        status: 'FAILED', // Add a status parameter to indicate the failure
+    }, { headers: {"Authorization" : token} });
+
+    console.log(res);
+
+    // Additional logic or UI updates can be added here if needed
+});
 }

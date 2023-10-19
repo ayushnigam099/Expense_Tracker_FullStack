@@ -138,3 +138,12 @@ td {
 #rzp-button1:hover {
     background-color: #e67e22; /* Darker orange on hover */
 }
+#message {
+    background-color: #2ecc71; /* Green background color */
+    color: white;
+    padding: 10px;
+    margin-top: 10px; /* Add margin from the top */
+    border-radius: 4px;
+    text-align: center;
+    display: none; /* Initially hide the message */
+}
