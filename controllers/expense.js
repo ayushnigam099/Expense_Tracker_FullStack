@@ -1,4 +1,5 @@
 const Expense = require('../models/expense');
+const Users = require('../models/users');
 
 const addexpense = async(req,res,next)=>
 {
@@ -16,8 +17,13 @@ const addexpense = async(req,res,next)=>
    if(isStringValidate(amount) || isStringValidate(description) || isStringValidate(category)){
      return res.status(400).json({success: false, message: 'Parameters missing'})
  }
-   const {dataValues}= await Expense.create({amount,description,category,UserId: req.user.id})
-       // console.log("data",dataValues) ;
+        await Users.update(
+            {
+            totalExpenses: req.user.totalExpenses + Number(amount),
+            },
+            { where: { id: req.user.id } }
+        );
+   let {dataValues}= await Expense.create({amount,description,category,UserId: req.user.id})
        return res.status(200).json({Success: dataValues});   
        }
    catch(err)
@@ -48,7 +54,13 @@ const deleteexpense= async (req, res) => {
       if (expenseid == undefined || expenseid.length === 0) {
           return res.status(400).json({ success: false });
       }
-
+      const expense = await Expense.findByPk(expenseid);
+      await Users.update(
+        {
+          totalExpenses: req.user.totalExpenses - expense.amount,
+        },
+        { where: { id: req.user.id } }
+      );
       let noofrows = await Expense.destroy({
           where: { id: expenseid, UserId: req.user.id }
       });

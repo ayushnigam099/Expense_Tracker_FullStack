@@ -24,7 +24,11 @@ const Users = sequelize.define('Users', {
         allowNull: false
       },
       // Adding a premium user column too
-      ispremiumuser: Sequelize.BOOLEAN
+      ispremiumuser: Sequelize.BOOLEAN,
+      totalExpenses: {
+        type: Sequelize.BIGINT,
+        defaultValue: 0,
+      },
    
   });
   module.exports = Users;
