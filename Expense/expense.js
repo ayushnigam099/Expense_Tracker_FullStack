@@ -6,13 +6,57 @@ const expenseList = document.getElementById('expense-list');
 
 document.addEventListener('DOMContentLoaded', create);
 
+// Parse the token
+function parseJwt (token) {
+    var base64Url = token.split('.')[1];
+    var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    var jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+
+    return JSON.parse(jsonPayload);
+}
+
+function showPremiumuserMessage() {
+    document.getElementById('rzp-button1').style.visibility = "hidden"
+    document.getElementById('message').innerHTML = "Premium"
+    document.getElementById('message').style.display = 'block';
+}
+
+function showLeaderboard(){
+    const inputElement = document.createElement("input")
+    inputElement.type = "button"
+    inputElement.value = 'Show Leaderboard'
+    inputElement.onclick = async() => {
+        const token = localStorage.getItem('token')
+        const userLeaderBoardArray = await axios.get('http://localhost:5500/premium/showLeaderBoard', { headers: {"Authorization" : token} })
+        console.log(userLeaderBoardArray)
+
+        var leaderboardElem = document.getElementById('leaderboard')
+        leaderboardElem.innerHTML += '<h1> Leader Board </<h1>'
+        userLeaderBoardArray.data.forEach((userDetails) => {
+            leaderboardElem.innerHTML += `<li>Name - ${userDetails.name} Total Expense - ${userDetails.total_cost || 0} </li>`
+        })
+    }
+    document.getElementById("message").appendChild(inputElement);
+
+}
+
+
+
 async function create(e) {
     e.preventDefault();
     try{ 
     let token= localStorage.getItem("token");
+    const decodeToken = parseJwt(token)
+    console.log(decodeToken);
+    const ispremiumuser = decodeToken.ispremiumuser
+    if(ispremiumuser){
+        showPremiumuserMessage()
+        showLeaderboard()
+    }
+
     let {data}= await axios.get("http://localhost:5500/expense/getexpense", { headers: {"Authorization":token}})
-    
-  
     for (let i = 0; i < data.data.length; i++) {
         const html = createExpenseElement(data.data[i]);
         expenseList.innerHTML = html+ expenseList.innerHTML;
@@ -121,6 +165,8 @@ document.getElementById('rzp-button1').onclick = async function (e) {
          document.getElementById('rzp-button1').style.visibility = "hidden"
          document.getElementById('message').innerHTML = "Premium"
          document.getElementById('message').style.display = 'block';
+         localStorage.setItem('token', res.data.token)
+        showLeaderboard();
         
      },
   };

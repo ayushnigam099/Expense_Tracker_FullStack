@@ -31,8 +31,8 @@ const signup= async(req,res,next)=>
         }
         
 // Token Generator
-const generateAccessToken = (id, name) => {
-    return jwt.sign({ userId : id, name: name} ,'61b809c35a715f69b20b1911b54c09c62f96806377161da4b8fa598c29b0893a');
+const generateAccessToken = (id, name, ispremiumuser) => {
+    return jwt.sign({ userId : id, name: name, ispremiumuser} ,'61b809c35a715f69b20b1911b54c09c62f96806377161da4b8fa598c29b0893a');
             }
     
 
@@ -73,7 +73,7 @@ const signin= async (req, res, next) => {
          }
    
          if (result === true) {
-           return res.status(200).json({ success: true, message: "User logged in successfully" ,token: generateAccessToken(user.id, user.name)});
+           return res.status(200).json({ success: true, message: "User logged in successfully" ,token: generateAccessToken(user.id, user.name, user.ispremiumuser)});
          } else {
            return res.status(400).json({ success: false, message: 'Password is incorrect' });
          }
@@ -88,7 +88,6 @@ module.exports = {
     signup,
     signin,
     generateAccessToken
-
 }
            
 

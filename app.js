@@ -10,6 +10,7 @@ const purchaseRoutes = require('./routes/purchase')
 
 const userRoutes = require('./routes/users')
 const expenseRoutes = require('./routes/expense')
+const premiumFeatureRoutes = require('./routes/premiumFeature')
 app.use(bodyParser.json({extended:false}));
 app.use(cors());
 
@@ -17,6 +18,7 @@ app.use(cors());
 app.use('/user', userRoutes);
 app.use('/expense',expenseRoutes );
 app.use('/purchase', purchaseRoutes);
+app.use('/premium', premiumFeatureRoutes)
 
 
 Users.hasMany(Expense);
@@ -26,7 +28,7 @@ Users.hasMany(Order);
 Order.belongsTo(Users);
 
 sequelize
-  .sync({force:true})
+  .sync()
   .then(result => {
     // console.log(result);
     app.listen(5500, ()=>

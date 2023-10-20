@@ -53,7 +53,7 @@ select {
     color: #333; 
 }
 
-input[type="submit"] {
+input[type="submit"] ,input[type="button"]{
     background-color: #16a085; 
     color: #fff; 
     padding: 10px;
@@ -64,6 +64,9 @@ input[type="submit"] {
 }
 
 input[type="submit"]:hover {
+    background-color: #1abc9c;
+}
+input[type="button"]:hover {
     background-color: #1abc9c;
 }
 
@@ -104,7 +107,7 @@ td {
     background-color: #ecf0f1; /* Light gray row color */
 }
 
-.delete-btn, .edit-btn {
+.delete-btn, .edit-btn{
     background-color: #FF6347;
     color: white;
     border: 1px solid #FF6347;
@@ -144,6 +147,8 @@ td {
     padding: 10px;
     margin-top: 10px; /* Add margin from the top */
     border-radius: 4px;
+    width: 150px;;
     text-align: center;
-    display: none; /* Initially hide the message */
+    display: none;     /* Initially hide the message */
+
 }

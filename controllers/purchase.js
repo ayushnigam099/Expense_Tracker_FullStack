@@ -35,7 +35,7 @@ const updateTransactionStatus = async (req, res ) => {
         const promise2 =  req.user.update({ ispremiumuser: true }) 
 
         Promise.all([promise1, promise2]).then(()=> {
-            return res.status(202).json({success: true, message: "Transaction Successful"});
+            return res.status(202).json({success: true, message: "Transaction Successful",token: userController.generateAccessToken(userId,undefined , true)});
         }).catch((error ) => {
             throw new Error(error)
         })
