@@ -5,7 +5,7 @@ const userauthentication = require('../middleware/auth')
 
 const router = express.Router();
 
-router.post('/addexpense', userauthentication.authenticate,expenseController.addexpense )
+router.post('/addexpense', userauthentication.authenticate,expenseController.addExpense )
 
 router.get('/getexpense',userauthentication.authenticate,  expenseController.getexpenses )
 
