@@ -19,28 +19,54 @@ function parseJwt (token) {
 
 function showPremiumuserMessage() {
     document.getElementById('rzp-button1').style.visibility = "hidden"
-    document.getElementById('message').innerHTML = "Premium"
+    document.getElementById('message1').innerHTML = "Premium"
     document.getElementById('message').style.display = 'block';
+    document.getElementById('message1').style.display = 'block';
 }
 
-function showLeaderboard(){
-    const inputElement = document.createElement("input")
-    inputElement.type = "button"
-    inputElement.value = 'Show Leaderboard'
-    inputElement.onclick = async() => {
-        const token = localStorage.getItem('token')
-        const userLeaderBoardArray = await axios.get('http://localhost:5500/premium/showLeaderBoard', { headers: {"Authorization" : token} })
-        console.log(userLeaderBoardArray)
+function showLeaderboard() {
+    const messageDiv = document.getElementById("message");
+    const leaderboardTable = document.createElement("table");
+    leaderboardTable.classList.add("leaderboard-table");
 
-        var leaderboardElem = document.getElementById('leaderboard')
-        leaderboardElem.innerHTML += '<h1> LeaderBoard </<h1>'
-        userLeaderBoardArray.data.forEach((userDetails) => {
-            leaderboardElem.innerHTML += `<li>Name - ${userDetails.name} Total Expense - ${userDetails.totalExpenses || 0} </li>`
-        })
-    }
-    document.getElementById("message").appendChild(inputElement);
+    const headerRow = leaderboardTable.insertRow(0);
+    const nameHeader = document.createElement("th");
+    nameHeader.textContent = "Name";
+    const expensesHeader = document.createElement("th");
+    expensesHeader.textContent = "Total Expenses";
+    headerRow.appendChild(nameHeader);
+    headerRow.appendChild(expensesHeader);
 
+    const showLeaderboardBtn = document.createElement("button");
+    showLeaderboardBtn.textContent = "Show Leaderboard";
+    showLeaderboardBtn.setAttribute('id', "show-leaderboard-btn")
+    showLeaderboardBtn.addEventListener("click", async () => {
+        const token = localStorage.getItem('token');
+        try {
+            const response = await axios.get('http://localhost:5500/premium/showLeaderBoard', { headers: { "Authorization": token } });
+            const userLeaderBoardArray = response.data;
+
+            userLeaderBoardArray.forEach((userDetails, index) => {
+                const row = leaderboardTable.insertRow(index + 1);
+                const nameCell = row.insertCell(0);
+                const expensesCell = row.insertCell(1);
+
+                nameCell.textContent = userDetails.name;
+                expensesCell.textContent = userDetails.totalExpenses || 0;
+            });
+
+            messageDiv.innerHTML= '<h1>LeaderBoard</h1>';
+            messageDiv.appendChild(leaderboardTable);
+        } catch (error) {
+            console.error(error);
+        }
+    });
+
+    // Append the "Show Leaderboard" button to the messageDiv
+     messageDiv.innerHTML = ''; // Clear the messageDiv
+     messageDiv.appendChild(showLeaderboardBtn);
 }
+
 
 async function create(e) {
     e.preventDefault();
@@ -159,11 +185,10 @@ document.getElementById('rzp-button1').onclick = async function (e) {
         
         console.log(res)
          alert('You are a Premium User Now')
-         document.getElementById('rzp-button1').style.visibility = "hidden"
-         document.getElementById('message').innerHTML = "Premium"
          document.getElementById('message').style.display = 'block';
          localStorage.setItem('token', res.data.token)
-        showLeaderboard();
+         showPremiumuserMessage()
+         showLeaderboard();
         
      },
   };
@@ -178,12 +203,10 @@ document.getElementById('rzp-button1').onclick = async function (e) {
     // Add the logic to update the order status to FAILED
     const res = await axios.post('http://localhost:5500/purchase/updatetransactionstatus', {
         order_id: options.order_id,
-        payment_id: response.error.metadata.order_id, // Adjust as needed based on the Razorpay response structure
-        status: 'FAILED', // Add a status parameter to indicate the failure
+        payment_id: response.error.metadata.order_id, 
+        status: 'FAILED', 
     }, { headers: {"Authorization" : token} });
 
     console.log(res);
-
-    // Additional logic or UI updates can be added here if needed
 });
 }

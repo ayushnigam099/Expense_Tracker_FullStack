@@ -141,14 +141,57 @@ td {
 #rzp-button1:hover {
     background-color: #e67e22; /* Darker orange on hover */
 }
-#message {
+#message,#message1 {
     background-color: #2ecc71; /* Green background color */
     color: white;
     padding: 10px;
     margin-top: 10px; /* Add margin from the top */
     border-radius: 4px;
-    width: 150px;;
     text-align: center;
     display: none;     /* Initially hide the message */
 
 }
+
+/* Styles for the "Show Leaderboard" button */
+button#show-leaderboard-btn {
+    background-color: #3498db;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+button#show-leaderboard-btn:hover {
+    background-color: #2980b9;
+    color: #fff;
+}
+
+/* Styles for the leaderboard table */
+table.leaderboard-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    border: 1px solid #ddd;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+table.leaderboard-table th, table.leaderboard-table td {
+    padding: 12px;
+    border: 1px solid #ddd;
+}
+
+table.leaderboard-table th {
+    background-color: #3498db;
+    color: white;
+}
+
+table.leaderboard-table td {
+    background-color: #ecf0f1;
+    color: #333;
+}
+
+/* Add any other specific styles as needed */

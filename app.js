@@ -1,5 +1,6 @@
 const bodyParser = require('body-parser');
 const express= require('express');
+const Sib = require('sib-api-v3-sdk')
 const cors= require('cors')
 const app = express();
 const sequelize= require('./connection/database');
@@ -11,6 +12,7 @@ const purchaseRoutes = require('./routes/purchase')
 const userRoutes = require('./routes/users')
 const expenseRoutes = require('./routes/expense')
 const premiumFeatureRoutes = require('./routes/premiumFeature')
+const forgotPassword=  require('./routes/forgotPassword')
 app.use(bodyParser.json({extended:false}));
 app.use(cors());
 
@@ -19,6 +21,7 @@ app.use('/user', userRoutes);
 app.use('/expense',expenseRoutes );
 app.use('/purchase', purchaseRoutes);
 app.use('/premium', premiumFeatureRoutes)
+app.use('/password', forgotPassword)
 
 
 Users.hasMany(Expense);
