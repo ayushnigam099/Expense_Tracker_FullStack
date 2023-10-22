@@ -1,12 +1,12 @@
 const bodyParser = require('body-parser');
 const express= require('express');
-const Sib = require('sib-api-v3-sdk')
 const cors= require('cors')
 const app = express();
 const sequelize= require('./connection/database');
 const Users = require('./models/users');
 const Expense = require('./models/expense');
 const Order = require('./models/orders');
+const Forgotpassword= require('./models/forgotPassword');
 const purchaseRoutes = require('./routes/purchase')
 
 const userRoutes = require('./routes/users')
@@ -29,6 +29,9 @@ Expense.belongsTo(Users);
 
 Users.hasMany(Order);
 Order.belongsTo(Users);
+
+Users.hasMany(Forgotpassword);
+Forgotpassword.belongsTo(Users);
 
 sequelize
   .sync()

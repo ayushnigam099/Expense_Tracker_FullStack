@@ -5,7 +5,7 @@ const forgotPassword = async(req,res)=>
 // Create an instance of the API client and set your API key
 const client = SibApiV3Sdk.ApiClient.instance;
 const apiKey = client.authentications['api-key'];
-apiKey.apiKey = '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';
+apiKey.apiKey = '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';
 
 const sender = {
   email: 'ayushnigam95530@gmail.com', // Use a verified sender email from your SendinBlue account
