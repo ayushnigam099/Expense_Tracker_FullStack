@@ -2,6 +2,7 @@ const bodyParser = require('body-parser');
 const express= require('express');
 const cors= require('cors')
 const app = express();
+const path= require('path')
 const sequelize= require('./connection/database');
 const Users = require('./models/users');
 const Expense = require('./models/expense');
@@ -12,11 +13,12 @@ const purchaseRoutes = require('./routes/purchase')
 const userRoutes = require('./routes/users')
 const expenseRoutes = require('./routes/expense')
 const premiumFeatureRoutes = require('./routes/premiumFeature')
-const forgotPassword=  require('./routes/forgotPassword')
+const forgotPassword=  require('./routes/forgotPassword');
+
+
+app.use(express.static(path.join(__dirname+ 'public')));  
 app.use(bodyParser.json({extended:false}));
 app.use(cors());
-
-
 app.use('/user', userRoutes);
 app.use('/expense',expenseRoutes );
 app.use('/purchase', purchaseRoutes);
