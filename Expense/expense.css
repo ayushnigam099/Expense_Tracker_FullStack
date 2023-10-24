@@ -141,7 +141,7 @@ td {
 #rzp-button1:hover {
     background-color: #e67e22; /* Darker orange on hover */
 }
-#message,#message1 {
+#message,#message1{
     background-color: #2ecc71; /* Green background color */
     color: white;
     padding: 10px;
@@ -151,21 +151,36 @@ td {
     display: none;     /* Initially hide the message */
 
 }
+#report{
+    background-color: #2ecc71; /* Green background color */
+    color: white;
+    padding: 10px;
+    margin-top: 10px; /* Add margin from the top */
+    border-radius: 4px;
+    text-align: center;
+}
 
 /* Styles for the "Show Leaderboard" button */
-button#show-leaderboard-btn {
+button#show-leaderboard-btn, #show-report-btn{
     background-color: #3498db;
     color: #fff;
     padding: 10px 20px;
     border: none;
+    align-items: center;
     border-radius: 4px;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    font-size: 16px;
-    margin-top: 10px;
+    font-size: 14px;
+    margin: auto;
+
 }
 
 button#show-leaderboard-btn:hover {
+    background-color: #2980b9;
+    color: #fff;
+}
+
+button#show-report-btn:hover {
     background-color: #2980b9;
     color: #fff;
 }

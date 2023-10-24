@@ -77,7 +77,8 @@ async function create(e) {
     if(ispremiumuser){
         showPremiumuserMessage()
         showLeaderboard()
-    }
+        reports();
+        }
 
     let {data}= await axios.get("http://localhost:5500/expense/getexpense", { headers: {"Authorization":token}})
     for (let i = 0; i < data.data.length; i++) {
@@ -96,6 +97,19 @@ async function create(e) {
     }
   }
        
+ }
+ function reports()
+ {
+    const messageDiv = document.getElementById("report");
+    const report = document.createElement("button");
+    report.textContent = "Reports";
+    report.setAttribute('id', "show-report-btn")
+    messageDiv.appendChild(report);
+    report.addEventListener('click', async ()=>
+    {
+        window.location.href="../Reports/reports.html";
+    })
+
  }
 
 function createExpenseElement(expense) {
@@ -189,6 +203,7 @@ document.getElementById('rzp-button1').onclick = async function (e) {
          localStorage.setItem('token', res.data.token)
          showPremiumuserMessage()
          showLeaderboard();
+         reports();
         
      },
   };
