@@ -9,11 +9,12 @@ const Expense = require('./models/expense');
 const Order = require('./models/orders');
 const Forgotpassword= require('./models/forgotPassword');
 const purchaseRoutes = require('./routes/purchase')
-
+const reportRoutes= require('./routes/reports');
 const userRoutes = require('./routes/users')
 const expenseRoutes = require('./routes/expense')
 const premiumFeatureRoutes = require('./routes/premiumFeature')
 const forgotPassword=  require('./routes/forgotPassword');
+require('dotenv').config();
 
 
 app.use(express.static(path.join(__dirname+ 'public')));  
@@ -22,9 +23,9 @@ app.use(cors());
 app.use('/user', userRoutes);
 app.use('/expense',expenseRoutes );
 app.use('/purchase', purchaseRoutes);
-app.use('/premium', premiumFeatureRoutes)
-app.use('/password', forgotPassword)
-
+app.use('/premium', premiumFeatureRoutes);
+app.use('/password', forgotPassword);
+app.use('/report',reportRoutes);
 
 Users.hasMany(Expense);
 Expense.belongsTo(Users);

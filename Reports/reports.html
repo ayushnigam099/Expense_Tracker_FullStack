@@ -4,9 +4,65 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reports-Expense Tracker</title>
+    <link rel="stylesheet" href="./reports.css">
 </head>
 <body>
     <h1>Reports</h1>
-    <input type="month" name="date";
+    <div class="container">
+        <div class="report-column">
+            <h2>Daily Reports</h2>
+            <input type="date" id="dailyDate">
+            <button class="button" onclick="showDailyReport()">Show</button>
+            <table class="table" id="dailyTable">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Amount</th>
+                        <th>Description</th>
+                        <th>Category</th>
+                    </tr>
+                </thead>
+                <tbody id="daily-expense-list">
+                    <!-- Existing expense entries will be appended here -->
+                </tbody>
+            </table>
+        </div>
+        <div class="report-column">
+            <h2>Monthly Reports</h2>
+            <input type="month" id="monthlyMonth">
+            <button class="button" onclick="showMonthlyReport()">Show</button>
+            <table class="table" id="monthlyTable">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Amount</th>
+                        <th>Description</th>
+                        <th>Category</th>
+                    </tr>
+                </thead>
+                <tbody id="month-expense-list">
+                    <!-- Existing expense entries will be appended here -->
+                </tbody>
+            </table>
+        </div>
+        <div class="report-column">
+            <h2>Past Reports</h2>
+            <button class="button" onclick="showPrevReport()">Show</button>
+            <table class="table" id="prevTable">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Links</th>
+                    </tr>
+                </thead>
+                <tbody id="prev-download">
+                    <!-- Existing expense entries will be appended here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <button class="button" id="downloadButton" onclick="handleDownload()">Download</button>
 </body>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="./reports.js"></script>
 </html>

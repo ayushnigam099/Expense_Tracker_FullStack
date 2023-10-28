@@ -10,7 +10,7 @@ const addExpense = async (req, res, next) => {
   const t = await sequelize.transaction(); // Create a common transaction object
 
   try {
-    const { amount, description, category } = req.body;
+    const { amount, description, category} = req.body;
 
     if (isStringValidate(amount) || isStringValidate(description) || isStringValidate(category)) {
       await t.rollback(); // Roll back the common transaction
@@ -19,7 +19,7 @@ const addExpense = async (req, res, next) => {
 
     try {
       const { dataValues } = await Expense.create(
-        { amount, description, category, UserId: req.user.id },
+        { amount, description, category ,UserId: req.user.id },
         { transaction: t }
       );
 

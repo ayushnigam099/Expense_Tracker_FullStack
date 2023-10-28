@@ -67,7 +67,6 @@ function showLeaderboard() {
      messageDiv.appendChild(showLeaderboardBtn);
 }
 
-
 async function create(e) {
     e.preventDefault();
     try{ 
@@ -113,8 +112,15 @@ async function create(e) {
  }
 
 function createExpenseElement(expense) {
+    const createdAt = new Date(expense.createdAt);
+    // Extract the date components
+    const year = createdAt.getUTCFullYear();
+    const month = String(createdAt.getUTCMonth() + 1).padStart(2, '0'); // Add 1 to convert from zero-based (0-11) to (1-12)
+    const day = String(createdAt.getUTCDate()).padStart(2, '0');
+    const formattedDate = `${day}-${month}-${year}`;
     return `
     <tr>
+    <td>${formattedDate}</td>
     <td>${expense.amount}</td>
     <td>${expense.description}</td>
     <td>${expense.category}</td>
@@ -129,17 +135,17 @@ myForm.addEventListener('submit', onSubmit);
 
 async function onSubmit(e) {
     e.preventDefault();
-        const details = {
-            amount: amountInput.value,
-            description: descriptionInput.value,
-            category: categoryInput.value,
-        };
-
         try {
+                const details = {
+                    amount: amountInput.value,
+                    description: descriptionInput.value,
+                    category: categoryInput.value,
+                };
+            
             const token  = localStorage.getItem('token');
             const { data } = await axios.post("http://localhost:5500/expense/addexpense", details, { headers: {"Authorization" : token} });
             expenseList.innerHTML =  createExpenseElement(data.Success) + expenseList.innerHTML
-        } 
+        }
         catch (err) {
             if(err.response.status== 400) { 
             alert(`${err.response.data.message}`);       

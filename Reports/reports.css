@@ -1,0 +1,45 @@
+body {
+    background: linear-gradient(to bottom, #f0f0f0, #c0c0c0);
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+h1 {
+    background: linear-gradient(to right, #ff99cc, #ff6666);
+    color: white;
+    padding: 20px 0;
+}
+.container {
+    display: flex;
+    justify-content: center;
+    margin: 20px;
+}
+.report-column {
+    width: 45%;
+    padding: 20px;
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+.table th, .table td {
+    padding: 10px;
+    text-align: center;
+    border: 1px solid #dddddd;
+}
+.table th {
+    background: #f2f2f2;
+}
+.button {
+    background: linear-gradient(to right, #99ccff, #6699ff);
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.button:hover {
+    background: linear-gradient(to right, #6699ff, #3366ff);
+}
