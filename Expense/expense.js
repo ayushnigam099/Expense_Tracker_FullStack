@@ -3,6 +3,10 @@ const descriptionInput = document.querySelector('#des');
 const myForm = document.querySelector('#my-form');
 const categoryInput = document.querySelector('#cat');
 const expenseList = document.getElementById('expense-list');
+const pageElement = document.getElementById("page");
+const previousNode = document.getElementById("previous");
+const currentNode = document.getElementById("current");
+const nextNode = document.getElementById("next");
 
 document.addEventListener('DOMContentLoaded', create);
 

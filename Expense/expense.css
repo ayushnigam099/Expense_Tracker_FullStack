@@ -208,5 +208,36 @@ table.leaderboard-table td {
     background-color: #ecf0f1;
     color: #333;
 }
+.position-static {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Adjust the height as needed */
+  }
+
+  /* Style the button group */
+  .btn-group {
+    display: flex;
+    align-items: center;
+  }
+
+  /* Style the previous and next buttons */
+  .btn {
+    background-color: #007BFF; /* Blue color, you can change this */
+    color: #fff; /* White text */
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    margin: 5px;
+  }
+
+  /* Style the current page button */
+  #current {
+    background-color: #0056b3; /* Darker blue color, you can change this */
+    color: #fff; /* White text */
+    padding: 10px 20px;
+    border: none;
+    cursor: not-allowed; /* It's the current page, so it's not clickable */
+  }
 
 /* Add any other specific styles as needed */
