@@ -1,3 +1,6 @@
+const helmet= require('helmet');
+const fs = require("fs");
+const morgan = require("morgan");
 const bodyParser = require('body-parser');
 const express= require('express');
 const cors= require('cors')
@@ -15,8 +18,12 @@ const expenseRoutes = require('./routes/expense')
 const premiumFeatureRoutes = require('./routes/premiumFeature')
 const forgotPassword=  require('./routes/forgotPassword');
 require('dotenv').config();
-
-
+const accessLogStream = fs.createWriteStream(
+  path.join(__dirname, "access.log"),
+  { flags: "a" }
+);
+app.use(morgan("combined", { stream: accessLogStream }));
+app.use(helmet());
 app.use(express.static(path.join(__dirname+ 'public')));  
 app.use(bodyParser.json({extended:false}));
 app.use(cors());

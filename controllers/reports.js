@@ -63,57 +63,70 @@ const monthreport = async(req,res)=>{
         res.status(500).json({ message: 'Server error' });
     }
 }
-
 const generatePDF = (expenses) => {
     return new Promise((resolve, reject) => {
       const doc = new PDFDocument();
       const pdfBuffer = [];
-  
+      
       doc.on('data', (chunk) => pdfBuffer.push(chunk));
       doc.on('end', () => resolve(Buffer.concat(pdfBuffer)));
-  
+      
       // Create a PDF document
       doc.fontSize(18).text('Expense Report', { align: 'center' });
       doc.moveDown();
-  
+      
       // Define table headers and calculate column widths
       const tableHeaders = ['Date', 'Amount', 'Description', 'Category'];
+      
       const columnWidths = calculateColumnWidths(tableHeaders, expenses);
-  
-      // Draw table headers horizontally
-      doc.font('Helvetica-Bold');
-      let xPosition = 50; // Initial x position
-      tableHeaders.forEach((header, i) => {
-        doc.text(header, xPosition, 200, { width: columnWidths[i], align: 'left' });
-        xPosition += columnWidths[i]; // Adjust for the next column
-      });
-  
-      // Draw table rows with text wrapping
-      doc.font('Helvetica');
-      expenses.forEach((expense) => {
-        xPosition = 50; // Reset x position for each row
-        const yPosition = doc.y + 20; // Vertical position for rows
-        const createdAt = new Date(expense.createdAt);
-        // Extract the date components
-        const year = createdAt.getUTCFullYear();
-        const month = String(createdAt.getUTCMonth() + 1).padStart(2, '0'); // Add 1 to convert from zero-based (0-11) to (1-12)
-        const day = String(createdAt.getUTCDate()).padStart(2, '0');
-        const formattedDate = `${day}-${month}-${year}`;
-        doc.text(formattedDate, xPosition, yPosition, { width: columnWidths[0], align: 'left' });
-        xPosition += columnWidths[0];
-  
-        doc.text(expense.amount, xPosition, yPosition, { width: columnWidths[1], align: 'left' });
-        xPosition += columnWidths[1];
-  
-        doc.text(expense.description, xPosition, yPosition, { width: columnWidths[2], align: 'left' });
-        xPosition += columnWidths[2];
-  
-        doc.text(expense.category, xPosition, yPosition, { width: columnWidths[3], align: 'left' });
-  
-        // Move to the next line for the next row
+      
+      // Function to draw a page with the table
+      const drawPage = (expensesPage) => {
+        doc.font('Helvetica-Bold');
+        const xPositions = [50, 50 + columnWidths[0], 50 + columnWidths[0] + columnWidths[1], 50 + columnWidths[0] + columnWidths[1] + columnWidths[2]];
+        
+        tableHeaders.forEach((header, i) => {
+          doc.text(header, xPositions[i], doc.y, { width: columnWidths[i], align: 'left' });
+        });
+        
         doc.moveDown();
-      });
-  
+        doc.font('Helvetica');
+        
+        expensesPage.forEach((expense) => {
+            const createdAt = new Date(expense.createdAt);
+            // Extract the date components
+            const year = createdAt.getUTCFullYear();
+            const month = String(createdAt.getUTCMonth() + 1).padStart(2, '0'); // Add 1 to convert from zero-based (0-11) to (1-12)
+            const day = String(createdAt.getUTCDate()).padStart(2, '0');
+            const formattedDate = `${day}-${month}-${year}`;
+          const row = [
+            formattedDate,
+            expense.amount.toString(),
+            expense.description,
+            expense.category,
+          ];
+          
+          row.forEach((cell, i) => {
+            doc.text(cell, xPositions[i], doc.y, { width: columnWidths[i], align: 'left' });
+          });
+          
+          doc.moveDown();
+        });
+      };
+      
+      // Calculate how many rows fit on a page
+      const rowsPerPage = Math.floor((doc.page.height - doc.y) / 20);
+      
+      for (let i = 0; i < expenses.length; i += rowsPerPage) {
+        const expensesPage = expenses.slice(i, i + rowsPerPage);
+        
+        if (i > 0) {
+          doc.addPage();
+        }
+        
+        drawPage(expensesPage);
+      }
+      
       doc.end();
     });
   };
@@ -122,22 +135,21 @@ const generatePDF = (expenses) => {
   function calculateColumnWidths(headers, data) {
     const minWidth = 80; // Minimum column width
     const maxWidth = 200; // Maximum column width
-  
+    
     const columnWidths = headers.map((header, index) => {
-      // Calculate the maximum content width for each column
       const contentWidth = Math.max(
-        header.length * 10, // Adjust as needed for header
-        ...data.map((row) => (row[headers[index]] ? row[headers[index]].toString().length * 7 : 0))
+        header.length * 10,
+        ...data.map((row) => (row[header] ? row[header].toString().length * 7 : 0))
       );
-  
-      // Ensure the column width is within the specified range
       return Math.min(maxWidth, Math.max(minWidth, contentWidth));
     });
-  
+    
     return columnWidths;
   }
   
+  
 
+  
 function uploadToS3(data, filename){
     const BUCKET_NAME = process.env.BUCKET_NAME;
     const IAM_USER_KEY = process.env.IAM_USER_KEY;

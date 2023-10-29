@@ -7,7 +7,11 @@ const pageElement = document.getElementById("page");
 const previousNode = document.getElementById("previous");
 const currentNode = document.getElementById("current");
 const nextNode = document.getElementById("next");
+const logOut = document.getElementById("logout");
+const pageDropValue = document.getElementById("pageDropValue");
+const span = document.getElementById("span");
 
+const page = 1;
 document.addEventListener('DOMContentLoaded', create);
 
 // Parse the token
@@ -73,6 +77,9 @@ function showLeaderboard() {
 
 async function create(e) {
     e.preventDefault();
+    if (!localStorage.getItem("limit")) {
+        localStorage.setItem("limit", 5);
+      }
     try{ 
     let token= localStorage.getItem("token");
     const decodeToken = parseJwt(token)
@@ -83,9 +90,13 @@ async function create(e) {
         reports();
         }
 
-    let {data}= await axios.get("http://localhost:5500/expense/getexpense", { headers: {"Authorization":token}})
-    for (let i = 0; i < data.data.length; i++) {
-        const html = createExpenseElement(data.data[i]);
+    let {data}= await axios.get(`http://localhost:5500/expense/getexpense?page=${page}&limit=${localStorage.getItem(
+        "limit"
+      )}`, { headers: {"Authorization":token}})
+      console.log(data.data)
+    showPagination(data.data);
+    for (let i = 0; i < data.data.result.length; i++) {
+        const html = createExpenseElement(data.data.result[i]);
         expenseList.innerHTML = html+ expenseList.innerHTML;
     }
 }
@@ -191,6 +202,84 @@ async function onDelete(e, id) {
         }
         }
 }
+//
+async function createBtn(page){
+    expenseList.innerHTML = "";
+    try{ 
+        let token= localStorage.getItem("token");
+        const decodeToken = parseJwt(token)
+        const ispremiumuser = decodeToken.ispremiumuser
+        if(ispremiumuser){
+            showPremiumuserMessage()
+            showLeaderboard()
+            }
+    
+        let {data}= await axios.get(`http://localhost:5500/expense/getexpense?page=${page}&limit=${localStorage.getItem(
+            "limit"
+          )}`, { headers: {"Authorization":token}})
+          console.log(data.data)
+        showPagination(data.data);
+        for (let i = 0; i < data.data.result.length; i++) {
+            const html = createExpenseElement(data.data.result[i]);
+            expenseList.innerHTML = html+ expenseList.innerHTML;
+        }
+    }
+      catch(err)
+      {
+        if(err.response.status== 500){
+            alert(`${err.response.data.message}`)
+        }
+       else
+        {
+            alert(`${err}`);
+        }
+      }
+}
+
+function showPagination({ previous, current, next, start, end, count }) {
+    pageElement.innerHTML = "";
+    if (previous) {
+      const btn1 = document.createElement("button");
+      btn1.setAttribute("type", `button`);
+      btn1.setAttribute("class", `btn btn-secondary btn1`);
+      btn1.setAttribute("id", `previous`);
+      btn1.appendChild(document.createTextNode(`${previous}`));
+      btn1.addEventListener("click", (e) => {
+        createBtn(parseInt(e.target.childNodes[0].wholeText));
+      });
+      pageElement.appendChild(btn1);
+    }
+    const btn2 = document.createElement("button");
+    btn2.setAttribute("type", `button`);
+    btn2.setAttribute("class", `btn btn-primary btn2`);
+    btn2.setAttribute("id", `current`);
+    btn2.appendChild(document.createTextNode(`${current}`));
+    btn2.addEventListener("click", (e) => {
+      createBtn(parseInt(e.target.childNodes[0].wholeText));
+    });
+    pageElement.appendChild(btn2);
+    if (next) {
+      const btn3 = document.createElement("button");
+      btn3.setAttribute("type", `button`);
+      btn3.setAttribute("class", `btn btn-secondary btn3`);
+      btn3.setAttribute("id", `next`);
+      btn3.appendChild(document.createTextNode(`${next}`));
+      btn3.addEventListener("click", (e) => {
+        createBtn(parseInt(e.target.childNodes[0].wholeText));
+      });
+      pageElement.appendChild(btn3);
+    }
+    span.innerHTML = `${start} - ${end} of ${count}`;
+  }
+  
+  pageDropValue.addEventListener("change", (e) => {
+    e.preventDefault();
+    // limit = parseInt(pageDropValue.value);
+    localStorage.setItem("limit", parseInt(pageDropValue.value));
+    location.reload();
+  });
+  //
+
 
 document.getElementById('rzp-button1').onclick = async function (e) {
     const token = localStorage.getItem('token')
@@ -235,3 +324,10 @@ document.getElementById('rzp-button1').onclick = async function (e) {
     console.log(res);
 });
 }
+
+logOut.addEventListener("click", (e) => {
+    e.preventDefault();
+    localStorage.clear();
+    location.replace("http://127.0.0.1:5000/Login/login.html");
+    
+  });

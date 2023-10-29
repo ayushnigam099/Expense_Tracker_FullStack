@@ -51,8 +51,33 @@ const addExpense = async (req, res, next) => {
 const getexpenses =async(req,res,next)=>
 {
   try{
-    const data= await Expense.findAll({where:{UserId: req.user.id}});
-    return res.status(200).json({data:data, Success: true})
+    const page = req.query.page;
+    let limit = req.query.limit;
+
+    if (limit > 50) {
+      limit = 50;
+    }
+    const result= await Expense.findAll({where:{UserId: req.user.id}});
+    const start = (page - 1) * limit;
+    const end = page * limit;
+
+    const data = {
+      current: parseInt(page),
+      start: start + 1,
+      end: end,
+      count: result.length,
+      result: result.slice(start, end),
+    };
+
+    if (page > 1) {
+      data.previous = parseInt(page - 1);
+    }
+
+    if (end < result.length) {
+      data.next = parseInt(page) + 1;
+    }
+
+    return res.status(200).json({data, Success: true})
 }
 catch(err)
 {

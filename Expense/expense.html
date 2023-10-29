@@ -10,6 +10,7 @@
 </head>
 
 <body>
+    
     <form action="#" autocomplete="off" id="my-form">
         <h3>EXPENSE TRACKER</h3>
         <h6>HAVE A TRACK ON YOUR EVERYDAY EXPENDITURE!</h6>
@@ -23,15 +24,28 @@
         <label for="category" >Category:</label>
         <select name="category" id="cat">
             <option value="Fuel">Fuel</option>
-            <option value="Recharge">Recharge</option>
-            <option value="Electricity">Electricity</option>
-            <option value="Entertainment">Entertainment</option>
+            <option value="Payments & Bookings">Payments & Bookings</option>
+            <option value="Mobile & Computers">Mobile & Computers</option>
+            <option value="Fashion & Beauty">Fashion & Beauty</option>
+            <option value="Groceries & Pet Supplies">Groceries & Pet Supplies</option>
+            <option value="Home, Furniture & Appliances">Home, Furniture & Appliances</option>
+            <option value="Music, Video & Gaming"> Music, Video & Gaming</option>
+            <option value="Toys, Children & Baby">Toys, Children & Baby</option>
+            <option value="Books & Education">Books & Education</option> 
+            <option value="Office & Professional">Office & Professional</option>
+            <option value="Sports, Outdoor & Travel">Sports, Outdoor & Travel</option>
+            <option value="Bills & EMI's">Bills & EMI's</option>
+            <option value="Others">Others</option>
         </select>
 
         <input type="submit" id="but" value="ADD EXPENSE"></input>
     </form>
 
+        <span>
+          <input type="submit" value="Log out" id="logout">
+        </span>
     <div id="entry">
+  
         <div id="message1"></div>
         <div id="report"></div>
         <div id="message"></div>
@@ -52,13 +66,23 @@
         </table>
         <div class="position-static">
             <div class="position-absolute start-50 translate-middle">
+                <div id="pageDropContainer">
+                    <label for="pageDropValue">Rows per page:</label>
+                    <select name="pageDropValue" id="pageDropValue">
+                        <option value="page">page:</option>
+                        <option value="5">5</option>
+                        <option value="10">10</option>
+                        <option value="20">20</option>
+                    </select>
+                    <span id="span"></span>
+                </div>
               <div class="btn-group me-2" role="group" aria-label="Second group" id="page">
                 <button type="button" class="btn" id="previous">Previous</button>
                 <button type="button" class="btn" id="current">1</button>
                 <button type="button" class="btn" id="next">Next</button>
               </div>
             </div>
-          </div><br>
+          </div>
         <ul id="leaderboard"></ul>
     </div>
 

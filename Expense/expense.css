@@ -239,5 +239,18 @@ table.leaderboard-table td {
     border: none;
     cursor: not-allowed; /* It's the current page, so it's not clickable */
   }
+  #pageDropContainer {
+    text-align: center;
+    margin: 10px 0;
+    display: flex;
+    align-items: center;
+}
 
+#pageDropContainer label {
+    margin-right: 10px;
+}
+
+#pageDropValue {
+    max-width: 6%;
+}
 /* Add any other specific styles as needed */
