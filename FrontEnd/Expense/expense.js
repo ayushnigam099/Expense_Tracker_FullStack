@@ -82,8 +82,8 @@ async function create(e) {
       }
     try{ 
     let token= localStorage.getItem("token");
-    const decodeToken = parseJwt(token)
-    const ispremiumuser = decodeToken.ispremiumuser
+    const decodeToken = parseJwt(token);
+    const ispremiumuser = decodeToken.ispremiumuser;
     if(ispremiumuser){
         showPremiumuserMessage()
         showLeaderboard()
@@ -93,7 +93,7 @@ async function create(e) {
     let {data}= await axios.get(`http://localhost:5500/expense/getexpense?page=${page}&limit=${localStorage.getItem(
         "limit"
       )}`, { headers: {"Authorization":token}})
-      console.log(data.data)
+    //   console.log(data.data)
     showPagination(data.data);
     for (let i = 0; i < data.data.result.length; i++) {
         const html = createExpenseElement(data.data.result[i]);

@@ -1,10 +1,11 @@
 const Expense = require('../models/expense');
+const Download = require('../models/download');
 const Users = require('../models/users');
 const PDFDocument = require('pdfkit');
 const fs = require('fs');
 const AWS= require('aws-sdk');
 const sequelize = require('../connection/database');
-const { Op } = require('sequelize'); // Import Sequelize operators
+const { Op } = require('sequelize');
 
 const dailyreport = async (req, res) => {
     const date = req.body.date;
@@ -146,10 +147,7 @@ const generatePDF = (expenses) => {
     
     return columnWidths;
   }
-  
-  
 
-  
 function uploadToS3(data, filename){
     const BUCKET_NAME = process.env.BUCKET_NAME;
     const IAM_USER_KEY = process.env.IAM_USER_KEY;
@@ -191,6 +189,12 @@ const downloadreport= async(req,res)=>{
     const userId= req.user.id;
     const filename = `Expense${userId}/${new Date()}.pdf`;
     const fileURl= await uploadToS3(pdfBuffer, filename);
+    // Saving FileUrl 
+    await Download.create({
+        UserId: userId,
+        link: fileURl,
+      });
+      
     res.status(200).json({fileURl, success:true});
 }catch(err)
 {
@@ -199,8 +203,24 @@ const downloadreport= async(req,res)=>{
 }
 }
 
+const prevReport= async(req, res)=>
+{
+     try {
+      const data= await req.user.getDownloads();
+     if(!data.length)
+     {
+        return res.status(404).json({message: "Data Unavailable"})
+     }
+     res.status(200).json({data});
+     }
+     catch(err)
+     {
+      console.log(err);
+     }
+}
 module.exports={
     dailyreport,
     monthreport,
-    downloadreport
+    downloadreport,
+    prevReport
 }

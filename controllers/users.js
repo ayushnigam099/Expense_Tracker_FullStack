@@ -32,7 +32,7 @@ const signup= async(req,res,next)=>
         
 // Token Generator
 const generateAccessToken = (id, name, ispremiumuser) => {
-    return jwt.sign({ userId : id, name: name, ispremiumuser} ,'61b809c35a715f69b20b1911b54c09c62f96806377161da4b8fa598c29b0893a');
+    return jwt.sign({ userId : id, name: name, ispremiumuser} , process.env.TOKEN);
             }
     
 

@@ -12,4 +12,6 @@ router.post('/monthreport', authenticatemiddleware.authenticate, reportsControll
 
 router.get('/download', authenticatemiddleware.authenticate, reportsController.downloadreport);
 
+router.get('/prevReport', authenticatemiddleware.authenticate, reportsController.prevReport);
+
 module.exports = router;

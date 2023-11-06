@@ -32,7 +32,7 @@ const forgotPassword = async(req,res)=>
 
     const client = Sib.ApiClient.instance;
     const apiKey = client.authentications["api-key"];
-    apiKey.apiKey = "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";
+    apiKey.apiKey = process.env.API_KEY_BREVO;
     const transEmailApi = new Sib.TransactionalEmailsApi();
     const sender = {
       email: "ayushnigam95530@gmail.com",
@@ -70,7 +70,7 @@ const resetPassword = async (req, res) => {
     res
       .status(200)
       .sendFile(
-        path.join(__dirname, "../", "public", "resetPassword.html")
+        path.join(__dirname, "../", "views", "resetPassword.html")
       );
   } catch (error) {
     console.log(error);
